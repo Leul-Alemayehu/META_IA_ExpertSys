@@ -35,12 +35,12 @@ public class JSONToPIPreprocessor2 {
 
         writer.write("% Properties for: " + element_name + "\n");
         // Extract and process general properties
-
+        element_name = element_name.toLowerCase();
         int atomicNumber = Integer.parseInt((String) element_property.get("atomicNumber"));
         double atomicMass = Double.parseDouble((String) element_property.get("atomicMass"));
 
-        writer.write(String.format("has_property(%s, %s, %d)\n", element_name, "atomicNumber",atomicNumber));
-        writer.write(String.format("has_property(%s, %s, %.2f)\n", element_name, "atomicMass",atomicMass));
+        writer.write(String.format("has_property(%s, %s, %d).\n", element_name, "atomicNumber",atomicNumber));
+        writer.write(String.format("has_property(%s, %s, %.2f).\n", element_name, "atomicMass",atomicMass));
 
         // management of color list
         List<String> colors = (List<String>) element_property.get("color");
@@ -53,22 +53,24 @@ public class JSONToPIPreprocessor2 {
         colorListBuilder.deleteCharAt(colorListBuilder.length() - 1);
         colorListBuilder.append("]");
         String colorListString = colorListBuilder.toString();
-        writer.write(String.format("has_property(%s, %s, %s)\n", element_name, "color",colorListString));
+        writer.write(String.format("has_property(%s, %s, %s).\n", element_name, "color",colorListString));
 
         // Write oxidation states
         List<String> oxidationStates = (List<String>) element_property.get("oxidationStates");
-        writer.write(String.format("has_property(%s, %s, %s)\n", element_name, "oxidationStates",oxidationStates));
+        writer.write(String.format("has_property(%s, %s, %s).\n", element_name, "oxidationStates",oxidationStates));
 
         // Store the whole String properties in Array
         String[] ele_property_names = {"symbol","stateOfMatter","density","meltingPoint", "boilingPoint","thermalConductivity",
                 "electricalConductivity","crystalStructure","toxicity", "reactivity", "oxideAcidityBasicity","reactionWithOxygen","reactionWithWater",
                 "reactionWithAcids","magnetism","flameTestColor", "isotopeCount","allotropeCount","corrosionResistance","refractiveIndex",
-                "hardness","radioactivity","group", "period","ionizationEnergy","electronConfiguration","electronegativity",};
+                "hardness","radioactivity","group", "period","ionizationEnergy","electronegativity",};
 
         // Write the repetitive properties from the Array above, with the help of for loop
         for(String ele_property_name: ele_property_names){
-            writer.write(String.format("has_property(%s, %s, %s)\n", element_name, ele_property_name,formatAtom((String)element_property.get(ele_property_name))));
+            writer.write(String.format("has_property(%s, %s, %s).\n", element_name, ele_property_name,formatAtom((String)element_property.get(ele_property_name))));
         }
+        writer.write(String.format("has_property(%s, %s, %s).\n", element_name, "electronConfiguration", "'" + formatAtom((String)element_property.get("electronConfiguration") + "'")));
+
         writer.write("\n");
     }
 
