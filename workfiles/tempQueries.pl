@@ -62,3 +62,4 @@ proceed(yes, ask_special_properties, ElementAnswer) :-
     write('What is the hardness of the element on the Mohs scale? '), read(Hardness),
     % Computation would start here taking the Previous ElementAnswer in consideration
     ElementAnswer = [radioactive(Radioactivity), isotope_count(IsotopeCount), flame_test_color(FlameTestColor), toxicity(Toxicity), corrosion_resistance(CorrosionResistance), hardness(Hardness)].
+%
