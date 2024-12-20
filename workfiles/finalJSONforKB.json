@@ -1,4 +1,4 @@
-{
+[ {
   "Gallium" : {
     "toxicity" : "No",
     "symbol" : "Ga",
@@ -1385,4 +1385,4 @@
     "atomicMass" : "54.938",
     "reactionWithAcids" : "Produces Hydrogen"
   }
-}
+} ]

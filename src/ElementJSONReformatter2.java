@@ -7,11 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ElementJSONReformatter {
+public class ElementJSONReformatter2 {
     public static void main(String[] args) {
         // Input and output file paths
         String inputFilePath = "workfiles/elementsandproperties.json";
-        String outputFilePath = "workfiles/reformattedelementdata.json";
+        String outputFilePath = "workfiles/finalJSONforKB.json";
 
         try {
             // Create ObjectMapper instance
@@ -29,8 +29,11 @@ public class ElementJSONReformatter {
                 reformattedData.put(name, element);
             }
 
-            // Write the reformatted data to a new JSON file
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(outputFilePath), reformattedData);
+            // Wrap the reformattedData in an array
+            List<Map<String, Map<String, Object>>> outputArray = List.of(reformattedData);
+
+            // Write the reformatted data (wrapped in an array) to a new JSON file
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(outputFilePath), outputArray);
 
             System.out.println("Data reformatted successfully. Output saved to " + outputFilePath);
 
