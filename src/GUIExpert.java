@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.*;
 
 import org.jpl7.*;
@@ -315,7 +316,10 @@ public class GUIExpert extends JFrame {
     private void search() {
         try {
             // Consult the Prolog knowledge base
-            String knowledgeBasePath = "C:/Users/leula/IdeaProjects/IA_Stuff/workfiles/updatedKBAndQuery.pl"; // REPLACE WITH YOUR updatedKBAndQuery.pl FILE LOCATION!
+            File kbFile = new File("../workfiles/updatedKBAndQuery.pl");
+
+            // MANUALLY ASSIGN updatedKBAndQuery.pl'S ABSOLUTE PATH TO knowledgeBasePath IF THE BAD METHOD BELOW FAILS
+            String knowledgeBasePath = getModifiedAbsolutePath(kbFile);
             Query consultQuery = new Query("consult('" + knowledgeBasePath + "')");
 
             // Check if knowledge base is loaded successfully
@@ -378,7 +382,7 @@ public class GUIExpert extends JFrame {
         }
 
         // Display results in the response field
-        if (combinedResults.toString() != null && combinedResults.toString() != "[]") {
+        if (combinedResults != null && combinedResults.toString() != "[]") {
             responseField.setText(String.join(", ", combinedResults));
             System.out.println(combinedResults);
         } else {
@@ -435,6 +439,14 @@ public class GUIExpert extends JFrame {
         }
         jsonArrayString.append("]");
         return jsonArrayString.toString();
+    }
+
+    // Helper to convert relative paths to absolute paths that Prolog can read without complaining. This probably only benefits Windows users.
+    public static String getModifiedAbsolutePath(File file) {
+        String absolutePath = file.getAbsolutePath();
+        absolutePath = absolutePath.replace("..\\", "");
+        System.out.println(absolutePath);
+        return absolutePath.replace("\\", "/");
     }
 
     public static void main(String[] args) {
