@@ -29,7 +29,7 @@ public class ElementJSONReformatter2 {
                 reformattedData.put(name, element);
             }
 
-            // Wrap the reformattedData in an array
+            // Wrap the reformattedData in a JSON array
             List<Map<String, Map<String, Object>>> outputArray = List.of(reformattedData);
 
             // Write the reformatted data (wrapped in an array) to a new JSON file
