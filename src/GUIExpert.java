@@ -26,7 +26,7 @@ public class GUIExpert extends JFrame {
         setLayout(new BorderLayout());
 
         // Disclaimer at the top
-        JLabel disclaimerLabel = new JLabel("<html><i>Units: Ionization energy (eV), Temperatures (°C), Electronegativity (Allen scale), Density (g/cm³). Use lowercase only for symbols. Use \"N/A\" or leave field blank for unknown values, or values not considered.</i></html>");
+        JLabel disclaimerLabel = new JLabel("<html><i>Units: Ionization energy (eV), Temperatures (°C), Electronegativity (Allen scale), Density (g/cm³). Put electron configuration in single quotes. Use \"N/A\" or leave field blank for unknown values, or values not considered.</i></html>");
         disclaimerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         disclaimerLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
