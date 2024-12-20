@@ -1,6 +1,6 @@
 # **Expert System for Periodic Table Elements Identification**
 
-This project serves as an intermediary system that facilitates the creation of a Prolog-based expert system. The Prolog system identifies elements based on user-provided physical and chemical properties. To streamline the user experience, a Java-based GUI is implemented as an intermediary step. This GUI allows users to input element properties conveniently and exports the data as a JSON file, which is then ingested into the Prolog knowledge base.
+This project combines Java and Prolog to create an expert system for identifying chemical elements based on various properties. The Java part handles input processing and file handling, while the Prolog part manages logical reasoning and querying capabilities. The system uses a knowledge base consisting of has_property(Element, PropertyLabel, PropertyValue) tripartite predicates to store element data.
 
 ---
 
@@ -22,21 +22,44 @@ This project serves as an intermediary system that facilitates the creation of a
 The ultimate goal of this project is to build an expert system in Prolog that can identify periodic table elements using user-provided **physical and chemical properties** (instead of solely relying on atomic numbers or mass). 
 
 ### 🛠️ **Why Java GUI?**
-Directly working with Prolog's input is cumbersome and prone to errors. The Java GUI serves as an intermediary interface:
-1. Users input data about elements (e.g., properties like electronegativity, group, or period, etc.) into a user-friendly form.
+Directly working with Prolog's input is cumbersome and prone to errors. The Java GUI serves as an intermediary interface for the knowledge engineer:
+1. Engineers input data about elements (e.g., properties like electronegativity, group, or period, etc.) into a user-friendly form.
 2. The Java application converts these inputs into a **JSON file**.
 3. This JSON is consumed by Prolog and loaded into its knowledge base.
+
+A Java GUI also improves the experience for ordinary users:
+1. Users input as many properties as desired or are available into a convenient form instead of Prolog's more abstruse querying system.
+2. The Java application converts inputs into valid Prolog queries using the JPL library.
+3. Query results are neatly outputted to the UI without the need for further interaction.
 
 ---
 
 ## ✨ **Features**
 
-The Java GUI application provides the following features:
-- **User Input Form**: Input various physical and chemical properties related to periodic table elements.
-- **Combo-box Selection**: Choose element properties (e.g., Group and Period values) from dropdown menus.
-- **Data Export**: Save user inputs into a JSON format compatible with Prolog knowledge base ingestion.
-- **Reset Input Fields**: Clear the fields to input new data easily without restarting the application.
-- **JSON Generation**: Data exported is in a structured JSON format, ready for use in the Prolog expert system.
+
+- **Graphical User Interface**:
+  - Input chemical properties through a user-friendly GUI.
+  - Allows for flexible property entry using text fields and combo boxes.
+
+- **Knowledge Base**:
+  - Stores information on 42 elements with predicates like `has_property/3`.
+  - Easily expandable to include more elements and properties.
+
+- **Prolog Integration**:
+  - Performs logical reasoning and querying through Prolog.
+  - Supports arrays and subsets of properties for more nuanced queries.
+
+- **Data Handling**:
+  - Uses JSON format to handle element property data.
+  - Converts JSON data into Prolog format (`finalKB.pl` and `updatedKBAndQuery.pl`).
+
+- **Efficient Querying**:
+  - `GUIExpert` queries Prolog knowledge base to return intersections of results based on user input.
+  - `finalExpert.pl` provides a pure Prolog solution for element identification.
+
+- **Expandable Knowledge**:
+  - Easily extends the knowledge base by adding new elements or properties.
+  - Utilizes preprocessor classes to convert JSON into Prolog-friendly formats.
 
 ---
 
@@ -44,6 +67,7 @@ The Java GUI application provides the following features:
 
 ### **Java**
 - Java Swing for GUI development.
+- JPL for Java–Prolog integration
 - Java libraries for JSON handling.
 
 ### **Prolog**
@@ -53,27 +77,31 @@ The Java GUI application provides the following features:
 
 ## 🏗️ **System Architecture**
 
-The system consists of:
-1. **Java GUI Application**:
-   - Provides a user-friendly interface to input element properties.
-   - Includes fields with drop-down lists (combo boxes) for common properties such as **Group** and **Period** values.
-   - A "reset" button clears inputs for reuse.
+The system architecture of the Chemical Element Identification Expert System is structured into two main components: Java and Prolog, working together to provide a comprehensive solution for chemical element identification.
 
-2. **JSON Serialization**:
-   - Input data is exported as a JSON file.
-   - This JSON file serves as the bridge between Java and the Prolog knowledge base.
+### 1. **Java Component**:
+   - **ElementDataJSONer**:
+     - Provides a graphical user interface (GUI) for inputting chemical properties.
+     - Generates or updates `elementsandproperties.JSON`.
+   - **ElementJSONReformatter2**:
+     - Reformats the raw JSON data into `finalJSONforKB.json` for easier Prolog processing.
+   - **JSONToPlPreprocessor2 & JSONToPlPreprocessor3**:
+     - Converts `finalJSONforKB.json` into Prolog files: `finalKB.pl` and `updatedKBAndQuery.pl`.
 
-3. **Prolog Knowledge Base**:
-   - The final system component, which will read this JSON file and act as the expert system logic engine.
+### 2. **Prolog Component**:
+   - **Prolog Knowledge Base**:
+     - Contains facts in the form `has_property(Element, PropertyLabel, PropertyValue)` for 42 elements.
+     - Supports complex properties such as arrays with predicates like `has_arrayed_property/3` and `has_property_array/3`.
+   - **GUIExpert**:
+     - Uses `updatedKBAndQuery.pl` to query the knowledge base for element identification based on user input.
+     - Returns intersections of results from multiple queries to handle diverse properties.
+   - **finalExpert.pl**:
+     - A pure Prolog implementation for element identification, functioning similarly to `GUIExpert`.
 
----
-
-## ⚙️ **Setup & Installation**
-
-### Prerequisites
-1. **Java Development Environment**: Ensure Java is installed on your system.
-   - Download Java from [Oracle's official site](https://www.oracle.com/java/technologies/javase-downloads.html).
-2. **IDE**: Use an IDE like IntelliJ IDEA, NetBeans, or Eclipse for a smooth development experience.
+### Overall Workflow:
+1. **Java GUI**: User or knowledge engineer inputs chemical properties.
+2. **Data Handling**: Data is processed, reformatted, and converted into Prolog knowledge base format.
+3. **Prolog Reasoning**: Queries are executed using Prolog logic, and results are returned either through the GUI or a pure Prolog interface.
 
 ---
 
@@ -96,20 +124,77 @@ cd META_IA_ExpertSys
 
 ## 🖥️ **Usage Instructions**
 
-1. **Launch the Application**:
-   - Open the GUI through your IDE or compiled Java binary.
+### Usage Instructions for Both Knowledge Engineer and Ordinary User
 
-2. **Fill in the Fields**:
-   - Input the element's properties like electronegativity, chemical symbols, etc., through the GUI's form fields.
+#### **For the Knowledge Engineer**:
 
-3. **Select Options**:
-   - Use dropdown combo boxes for "Group" and "Period" values.
+**Goal**: Input and manage chemical element properties to expand or refine the knowledge base.
 
-4. **Export JSON**:
-   - Once input is complete, click the **Save/Export** button. This will generate a `data.json` file.
+##### Steps:
 
-5. **Use with Prolog**:
-   - Load the generated JSON file into the Prolog knowledge base to run inference.
+1. **Prepare Element Data**:
+   - **Run `ElementDataJSONer`**:  
+     This class provides a GUI interface to input chemical properties of elements. It stores data in `elementsandproperties.JSON`.
+     ```bash
+     java ElementDataJSONer
+     ```
+
+2. **Reformat JSON**:
+   - **Run `ElementJSONReformatter2`**:  
+     Converts the raw JSON data in `elementsandproperties.JSON` into a more structured form suitable for Prolog processing (`finalJSONforKB.json`).
+     ```bash
+     java ElementJSONReformatter2
+     ```
+
+3. **Convert JSON to Prolog Knowledge Base**:
+   - **Run `JSONToPlPreprocessor2`**:  
+     Converts `finalJSONforKB.json` into a basic Prolog knowledge base (`finalKB.pl`). This can be pasted into `finalExpert.pl` by users interested in querying in "pure Prolog" without Java as an intermediary.
+     ```bash
+     java JSONToPlPreprocessor2
+     ```
+
+4. **Convert JSON to Prolog with Logic**:
+   - **Run `JSONToPlPreprocessor3`**:  
+     Converts `finalJSONforKB.json` into a knowledge base, adds logic to it and outputs `updatedKBAndQuery.pl` for use in both the GUI and pure Prolog environments.
+     ```bash
+     java JSONToPlPreprocessor3
+     ```
+
+---
+
+#### **For the Ordinary User**:
+
+**Goal**: Use the expert system to identify elements based on given properties through the GUI or pure Prolog interface.
+
+##### Steps:
+
+1. **Using GUIExpert**:
+   - **Run `GUIExpert`**:  
+     This class provides a graphical interface where the user can input chemical properties (e.g., atomic number, electronegativity) into text fields and combo boxes.
+     ```bash
+     java GUIExpert
+     ```
+   
+2. **Input Properties**:
+   - Use the GUI to enter as many property values as desired. Click the "Submit" button to generate results.
+   
+3. **Query Processing**:
+   - `GUIExpert` queries `updatedKBAndQuery.pl` for each user input and returns the intersection of results from all queries.
+   
+---
+
+**Optional Pure Prolog Usage**:
+- **Run `finalExpert.pl`**:  
+  For users preferring a text-based Prolog interface, `finalExpert.pl` functions similarly to `GUIExpert`, but without a graphical interface.
+  ```bash
+  swipl -f finalExpert.pl
+  ```
+
+---
+
+### Summary:
+- **Knowledge Engineer**: Focuses on managing and expanding the knowledge base using `ElementDataJSONer`, `JSONToPlPreprocessor2`, and `JSONToPlPreprocessor3`.
+- **Ordinary User**: Uses the graphical interface (`GUIExpert`) or `finalExpert.pl` to query elements based on properties.
 
 ---
 
@@ -123,9 +208,9 @@ Feel free to use, modify, and distribute!
 ## 🛠️ **Next Steps**
 
 The current focus of the Java GUI is:
-- Complete the input form functionality.
-- Implement proper serialization into JSON.
-- Enable integration with Prolog by transforming user-provided JSON into a Prolog-compatible format.
+- Expanding the knowledge base to encompass all elements.
+- Incorporating uncertainty handling mechanisms to deal with imprecise data.
+- Enhancing the user interface to provide a more interactive and informative experience.
 
 Once ready, the JSON data will seamlessly interface with the Prolog knowledge base for intelligent element identification based on physical/chemical properties.
 
