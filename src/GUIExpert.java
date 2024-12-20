@@ -445,7 +445,7 @@ public class GUIExpert extends JFrame {
     public static String getModifiedAbsolutePath(File file) {
         String absolutePath = file.getAbsolutePath();
         absolutePath = absolutePath.replace("..\\", "");
-        System.out.println(absolutePath);
+        System.out.println("Absolute path taken: " + absolutePath);
         return absolutePath.replace("\\", "/");
     }
 
